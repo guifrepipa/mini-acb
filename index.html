@@ -2,246 +2,186 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi MiniCB</title>
+<title>Marcador ACB PRO</title>
 <style>
 body {
-font-family: Arial, sans-serif;
-background-color: #222;
-color: #fff;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-flex-direction: column;
-}
-h1 { color: #ffcc00; }
-p { font-size: 18px; }
-</style>
-</head>
-<body>
-<h1>¡Bienvenido a mi MiniCB!</h1>
-<p>Esta es mi web publicada en GitHub Pages 🚀</p>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi MiniCB ACB</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-background-color: #111; /* Fondo oscuro */
-color: #fff;
-margin: 0;
-padding: 0;
-}
-header {
-background-color: #ffcc00; /* Color estilo ACB */
-padding: 20px;
+background: #0b0f1a;
+color: white;
+font-family: Arial;
 text-align: center;
-font-size: 24px;
+}
+
+.scoreboard {
+display: flex;
+justify-content: space-between;
+background: #111;
+padding: 20px;
+border-radius: 10px;
+margin: 20px;
+}
+
+.team {
+width: 40%;
+}
+
+.score {
+font-size: 60px;
 font-weight: bold;
 }
-section {
-padding: 20px;
-text-align: center;
+
+.center {
+width: 20%;
 }
+
+.players {
+display: flex;
+justify-content: space-around;
+margin-top: 20px;
+}
+
+.player-box {
+background: #1a1f2e;
+padding: 15px;
+border-radius: 10px;
+width: 40%;
+}
+
 button {
-background-color: #ffcc00;
+margin: 3px;
+padding: 5px 10px;
 border: none;
-padding: 10px 20px;
-margin: 10px;
-font-size: 16px;
+border-radius: 5px;
+background: orange;
 cursor: pointer;
 }
-button:hover {
-background-color: #ffaa00;
-}
 </style>
 </head>
+
 <body>
 
-<header>🏀 Bienvenido a mi MiniCB ACB 🏀</header>
+<h1>🏀 MARCADOR ACB</h1>
 
-<section>
-<!-- Tu código original de 11 líneas -->
-<p>¡Esto es lo que me pasó ChatGPT antes!</p>
-<p>Linea 2 de tu código original</p>
-<p>Linea 3 de tu código original</p>
-<p>Linea 4 de tu código original</p>
-<p>Linea 5 de tu código original</p>
-<p>Linea 6 de tu código original</p>
-<p>Linea 7 de tu código original</p>
-<p>Linea 8 de tu código original</p>
-<p>Linea 9 de tu código original</p>
-<p>Linea 10 de tu código original</p>
-<p>Linea 11 de tu código original</p>
+<div class="scoreboard">
+<div class="team">
+<h2 id="teamA">Equipo A</h2>
+<div class="score" id="scoreA">0</div>
+<button onclick="addScore('A',1)">+1</button>
+<button onclick="addScore('A',2)">+2</button>
+<button onclick="addScore('A',3)">+3</button>
+</div>
 
-<!-- Código nuevo que añadimos -->
-<p>Explora mis secciones y novedades del baloncesto.</p>
-<button onclick="alert('¡Has pulsado el botón Sección 1!')">Sección 1</button>
-<button onclick="alert('¡Has pulsado el botón Sección 2!')">Sección 2</button>
-</section>
+<div class="center">
+<h2 id="time">10:00</h2>
+<p>Cuarto: <span id="quarter">1</span></p>
+<button onclick="startTimer()">▶️</button>
+<button onclick="stopTimer()">⏸</button>
+</div>
 
-<section>
-<h2>Noticias ACB</h2>
-<p>¡Aquí podrás añadir resultados y estadísticas de tus equipos favoritos!</p>
-</section>
+<div class="team">
+<h2 id="teamB">Equipo B</h2>
+<div class="score" id="scoreB">0</div>
+<button onclick="addScore('B',1)">+1</button>
+<button onclick="addScore('B',2)">+2</button>
+<button onclick="addScore('B',3)">+3</button>
+</div>
+</div>
+
+<div class="players">
+
+<div class="player-box">
+<h3>Jugadores Equipo A</h3>
+<div id="playersA"></div>
+</div>
+
+<div class="player-box">
+<h3>Jugadores Equipo B</h3>
+<div id="playersB"></div>
+</div>
+
+</div>
+
+<script>
+let scoreA = 0;
+let scoreB = 0;
+
+function addScore(team, points) {
+if(team === 'A') {
+scoreA += points;
+document.getElementById("scoreA").innerText = scoreA;
+} else {
+scoreB += points;
+document.getElementById("scoreB").innerText = scoreB;
+}
+}
+
+let timer;
+let timeLeft = 600;
+
+function startTimer() {
+timer = setInterval(() => {
+if(timeLeft > 0) {
+timeLeft--;
+let min = Math.floor(timeLeft / 60);
+let sec = timeLeft % 60;
+document.getElementById("time").innerText =
+`${min}:${sec < 10 ? '0'+sec : sec}`;
+}
+}, 1000);
+}
+
+function stopTimer() {
+clearInterval(timer);
+}
+
+// JUGADORES
+let playersA = [
+{name: "Jugador A1", points: 0},
+{name: "Jugador A2", points: 0}
+];
+
+let playersB = [
+{name: "Jugador B1", points: 0},
+{name: "Jugador B2", points: 0}
+];
+
+function renderPlayers() {
+let htmlA = "";
+playersA.forEach((p,i) => {
+htmlA += `
+<p>${p.name}: ${p.points} pts
+<button onclick="addPlayerPoints('A',${i},1)">+1</button>
+<button onclick="addPlayerPoints('A',${i},2)">+2</button>
+<button onclick="addPlayerPoints('A',${i},3)">+3</button>
+</p>`;
+});
+
+let htmlB = "";
+playersB.forEach((p,i) => {
+htmlB += `
+<p>${p.name}: ${p.points} pts
+<button onclick="addPlayerPoints('B',${i},1)">+1</button>
+<button onclick="addPlayerPoints('B',${i},2)">+2</button>
+<button onclick="addPlayerPoints('B',${i},3)">+3</button>
+</p>`;
+});
+
+document.getElementById("playersA").innerHTML = htmlA;
+document.getElementById("playersB").innerHTML = htmlB;
+}
+
+function addPlayerPoints(team, index, pts) {
+if(team === 'A') {
+playersA[index].points += pts;
+addScore('A', pts);
+} else {
+playersB[index].points += pts;
+addScore('B', pts);
+}
+renderPlayers();
+}
+
+renderPlayers();
+</script>
 
 </body>
 </html>
-<section>
-<h2>Sección 3 - Estadísticas</h2>
-<p>Aquí podrás añadir resultados de tus partidos y estadísticas de jugadores.</p>
-<button onclick="alert('¡Has pulsado Sección 3!')">Sección 3</button>
-</section>
-
-<section>
-<h2>Sección 4 - Noticias ACB</h2>
-<p>Últimas noticias de tus equipos favoritos.</p>
-<button onclick="alert('¡Has pulsado Sección 4!')">Sección 4</button>
-</section>
-<img src="img/logo.png" alt="Logo equipo" width="200">
-section:nth-of-type(odd) { background-color: #222; }
-section:nth-of-type(even) { background-color: #333; }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MiniCB ACB 2025-26</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-background-color: #111;
-color: #fff;
-margin: 0;
-padding: 0;
-}
-header {
-background-color: #ffcc00;
-padding: 20px;
-text-align: center;
-font-size: 28px;
-font-weight: bold;
-}
-.team {
-padding: 20px;
-border-top: 3px solid #ffcc00;
-text-align: center;
-}
-.team h2 {
-margin: 10px 0;
-color: #ffcc00;
-}
-.team img {
-width: 120px;
-display: block;
-margin: 10px auto;
-}
-.team ul {
-list-style: none;
-padding: 0;
-margin: 5px auto;
-max-width: 400px;
-}
-.team li {
-margin: 3px 0;
-}
-</style>
-</head>
-<body>
-
-<header>🏀 Liga ACB 2025‑26 – Equipos y Plantillas 🏀</header>
-
-<!-- FC Barcelona -->
-<div class="team">
-<h2>FC Barcelona</h2>
-<img src="img/barca.png" alt="Logo Barça">
-<ul>
-<li>Juan Núñez</li>
-<li>Nico Laprovittola</li>
-<li>Tomas Satoransky</li>
-<li>Darío Brizuela</li>
-<li>Kevin Punter</li>
-<li>Myles Cale</li>
-<li>Will Clyburn</li>
-<li>Jan Vesely</li>
-<li>Willy Hernangómez</li>
-<li>Youssoupha Fall</li>
-</ul>
-</div>
-
-<!-- Bàsquet Girona -->
-<div class="team">
-<h2>Bàsquet Girona</h2>
-<img src="img/girona.png" alt="Logo Girona">
-<ul>
-<li>Derek Needham</li>
-<li>Guillem Ferrando</li>
-<li>José Ignacio Vildoza</li>
-<li>Otis Livingston II</li>
-<li>Mark Hughes</li>
-<li>Maxi Fjellerup</li>
-<li>Pep Busquets</li>
-<li>Mindaugas Susinskas</li>
-<li>Nikola Maric</li>
-<li>Juan Fernández</li>
-</ul>
-</div>
-
-<!-- Joventut Badalona -->
-<div class="team">
-<h2>Joventut Badalona</h2>
-<img src="img/joventut.png" alt="Logo Joventut">
-<ul>
-<li>Guillem Vives</li>
-<li>Ludde Hakanson</li>
-<li>Ricky Rubio</li>
-<li>Cameron Hunt</li>
-<li>Adam Hanga</li>
-<li>Miguel Allen</li>
-<li>Yannick Kraag</li>
-<li>Henri Drell</li>
-<li>Sam Dekker</li>
-<li>Ante Tomic</li>
-</ul>
-</div>
-
-<!-- Unicaja Málaga -->
-<div class="team">
-<h2>Unicaja Málaga</h2>
-<img src="img/unicaja.png" alt="Logo Unicaja">
-<ul>
-<li>Alberto Díaz</li>
-<li>Kendrick Perry</li>
-<li>Xavier Castañeda</li>
-<li>Nihad Djedovic</li>
-<li>Tyler Kalinoski</li>
-<li>Chris Duarte</li>
-<li>Jonathan Barreiro</li>
-<li>Emir Sulejmanovic</li>
-<li>James Webb III</li>
-<li>David Kravish</li>
-</ul>
-</div>
-
-<!-- Valencia Basket -->
-<div class="team">
-<h2>Valencia Basket</h2>
-<img src="img/valencia.png" alt="Logo Valencia">
-<ul>
-<li>Darius Thompson</li>
-<li>Ike Iroegbu</li>
-<li>Jean Montero</li>
-<li>Omari Moore</li>
-<li>Sergio de Larrea</li>
-<li>Xabi López‑Arostegui</li>
-<li>Nate Reuvers</li>
-<li>Jaime Pradilla</li>
-</ul>
-</div>
